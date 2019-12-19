@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel
+from models import Place
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
+HBNB_TYPE_STORAGE = os.getenv("HBNB_TYPE_STORAGE")
 
 
 class Place(BaseModel):
@@ -24,12 +27,10 @@ class Place(BaseModel):
     """
     __tablename__ = "places"
     city_id = Column(
-        String(60), nullable=False,
-        ForeignKey("cities.id")
+        String(60), ForeignKey("cities.id"), nullable=False
     )
     user_id = Column(
-        String(60), nullable=False,
-        ForeignKey("users.id")
+        String(60), ForeignKey("users.id"), nullable=False
     )
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=False)
@@ -52,3 +53,14 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     amenity_ids = []
+    if HBNB_TYPE_STORAGE == "db":
+        reviews = relationship(
+            "Review", cascade="all, delete",
+            backref="place"
+        )
+    elif HBNB_TYPE_STORAGE == "file":
+        ct = {}
+        for k, v in models.storage.all(Review).items():            
+            if v.place_id == Place.id:
+                ct[k] = v
+        reviews = ct
