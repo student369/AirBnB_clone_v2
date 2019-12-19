@@ -2,7 +2,8 @@
 """This is the user class"""
 from models.base_model import BaseModel
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -22,5 +23,9 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=False)
     places = relationship(
         "Place", cascade="all, delete",
+        backref="user"
+    )
+    reviews = relationship(
+        "Review", cascade="all, delete",
         backref="user"
     )
