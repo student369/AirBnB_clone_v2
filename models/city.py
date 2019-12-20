@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """This is the city class"""
 from models.base_model import BaseModel
+from models.place import Place
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
