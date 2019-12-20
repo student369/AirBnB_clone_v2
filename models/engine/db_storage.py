@@ -47,9 +47,9 @@ class DBStorage:
         )
 
         if HBNB_ENV == "test":
-            Base.metatata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)
         else:
-            Base.metatata.create_all(self.__engine)
+            Base.metadata.create_all(self.__engine)
 
     def all(self, cls=None):
         """returns a dictionary
@@ -114,7 +114,7 @@ class DBStorage:
     def reload(self):
         """serialize the file path to JSON file path
         """
-        Base.metatata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         Session = sessionmaker(
             bind=self.__engine, expire_on_commit=False
         )
