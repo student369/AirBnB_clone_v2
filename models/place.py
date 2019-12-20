@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """This is the place class"""
 import os
-import models
+from models.amenity import Amenity
+from models.review import Review
 from models.base_model import BaseModel
-from models import Place, Amenity, Review
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
@@ -76,7 +76,7 @@ class Place(BaseModel):
         )
         amenities = relationship(
             "Amenity", secondary=place_amenity,
-            view_only=False
+            viewonly=False
         )
     elif HBNB_TYPE_STORAGE == "file":
 
