@@ -1,33 +1,41 @@
 #!/usr/bin/python3
-"""This is the state class"""
-import os
-from models.base_model import BaseModel
+'''
+    Implementation of the State class
+'''
+
+from models.base_model import BaseModel, Base
 from models.city import City
+import models
+import sqlalchemy
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
-
-Base = declarative_base()
-HBNB_TYPE_STORAGE = os.getenv("HBNB_TYPE_STORAGE")
+from os import getenv
 
 
 class State(BaseModel, Base):
-    """This is the class for State
-    Attributes:
-        name: input name
-    """
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
+    '''
+        Implementation for the State.
+    '''
 
-    if HBNB_TYPE_STORAGE == "db":
-        cities = relationship(
-            "City", cascade="all, delete",
-            backref="state"
-        )
-    elif HBNB_TYPE_STORAGE == "file":
-        ct = {}
-        for k, v in models.storage.all(City).items():
-            if v.state_id == State.id:
-                ct[k] = v
-        cities = ct
+    __tablename__ = "states"
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship('City', cascade='all, delete-orphan',
+                              backref='state')
+        cities = relationship('City', cascade='all, delete', backref='state')
+    else:
+        name = ""
+
+    @property
+    def cities(self):
+        '''
+        Get a list of cities based on state.id
+        '''
+        my_list = []
+
+        cities = models.storage.all(City)
+        for city in cities:
+            if cities[city].state_id == self.id:
+                my_list.append(cities[city])
+        return my_list
