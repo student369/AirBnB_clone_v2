@@ -5,6 +5,7 @@ A project to understant the framework Flask
 This project contain the following files:
 
 | File | Description |
+| ---- | ----------- |
 | 0-hello_route.py, __init__.py | A Python script that starts a Flask web application. |
 | 1-hbnb_route.py | A Python script that starts a Flask web app. |
 | 2-c_route.py | A Python script that handle some routes with Flask. |
