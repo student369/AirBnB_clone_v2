@@ -5,7 +5,6 @@ Script that starts a Flask web aplication.
 """
 from flask import Flask
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
 
 @app.route("/")
@@ -14,4 +13,5 @@ def index():
     return "Hello HBNB!"
 
 
+app.url_map.strict_slashes = False
 app.run(host="0.0.0.0", debug=False)
