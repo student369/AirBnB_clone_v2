@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <link rel="shortcut icon" type="image/x-icon" href="../static/images/icon.png"/>
+  <link rel="stylesheet" href="../static/styles/4-common.css"/>
+  <link rel="stylesheet" href="../static/styles/3-header.css"/>
+  <link rel="stylesheet" href="../static/styles/3-footer.css"/>
+  <link rel="stylesheet" href="../static/styles/6-filters.css"/>
+  <link rel="stylesheet" href="../static/styles/8-places.css"/>
+  </head>
+  <body>
+    <header>
+      <div class="logo"></div>
+    </header>
+    <div class="container">
+      <section class="filters">
+	<div class="locations">
+	  <h3>States</h3>
+	  <h4>&nbsp</h4>
+	  <ul class="popover">
+	    {% for state in states.values()|sort(attribute='name') %}
+	    <h2>{{ state.name }}</h2>
+	    {% for city in state.cities|sort(attribute='name') %}
+	    <li>{{ city.name }}</li>
+	    {% endfor %}
+	    {% endfor %}
+	  </ul>
+	</div>
+	<div class="amenities">
+	  <h3>Amenities</h3>
+	  <h4>&nbsp</h4>
+	  <ul class="popover">
+	    {% for amenity in amenities.values()|sort(attribute='name') %}
+	    <li>{{ amenity.name }}</li>
+	    {% endfor %}
+	  </ul>
+	</div>
+	<button>
+	  Search
+	</button>
+      </section>
+      <section class="places">
+	<h1>Places</h1>
+	{% for place in places.values()|sort(attribute='name') %}
+	<article>
+	  <div class="title_price">
+	    <h2>{{ place.name }}</h2>
+	    <div class="price_by_night">
+	      ${{ place.price_by_night }}
+	    </div>
+	  </div>
+	  <div class="information">
+	    <div class="max_guest">
+	      <div class="icon_group"></div>
+	      {% if place.max_guest == 1 %}
+	      {{ place.max_guest }} Guest
+	      {% else %}
+	      {{ place.max_guest }} Guests
+	      {% endif %}
+	    </div>
+	    <div class="number_rooms">
+	      <div class="icon_bed"></div>
+	      {% if place.number_rooms == 1 %}
+	      {{ place.number_rooms }} Room
+	      {% else %}
+	      {{ place.number_rooms }} Rooms
+	      {% endif %}
+	    </div>
+	    <div class="number_bathrooms">
+	      <div class="icon_bath"></div>
+	      {% if place.number_bathrooms == 1 %}
+	      {{ place.number_bathrooms }} Bathroom
+	      {% else %}
+	      {{ place.number_bathrooms }} Bathrooms
+	      {% endif %}
+	    </div>
+	  </div>
+	  <div class="user">
+	    {% for user in users.values() %}
+	    {% if user.id == place.user_id %}
+	    <p><b>Owner: </b>{{ user.first_name }} {{ user.last_name }}</p>
+	    {% endif %}
+	    {% endfor %}
+	  </div>
+	  <div class="description">
+	    <p>{{ place.description|safe }}</p>
+	  </div>
+	</article>
+	{% endfor %}
+      </section>
+    </div>
+    <footer>
+      Holberton School
+    </footer>
+  </body>
+</html>
